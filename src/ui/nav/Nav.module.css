@@ -1,0 +1,18 @@
+.list {
+  list-style-type: none;
+  display: flex;
+  gap: 15px;
+}
+
+.list a {
+  text-decoration: none;
+  color: #e9c110;
+}
+
+.list a:hover {
+  color: #0dd61d;
+}
+
+.list a[class='active'] {
+  color: #0dd61d;
+}

@@ -5,7 +5,7 @@ import styles from './Nav.module.css';
 function Nav() {
   return (
     <nav>
-      <ul>
+      <ul className={styles.list}>
         <li>
           <NavLink to='/home'>Home</NavLink>
         </li>
