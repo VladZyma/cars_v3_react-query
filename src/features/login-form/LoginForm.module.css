@@ -1,0 +1,31 @@
+.form {
+  width: 265px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  background-color: #c4c4c4;
+  border: 1px solid #87ff17;
+  border-radius: 5px;
+}
+
+.label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn {
+  align-self: center;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  background-color: #50c00e;
+  color: #52a111;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  background-color: #9aff3b;
+}
