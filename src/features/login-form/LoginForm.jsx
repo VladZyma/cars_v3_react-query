@@ -1,4 +1,7 @@
 import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
+
+import { userValidator } from '../../validators/user.validator';
 
 import styles from './LoginForm.module.css';
 
@@ -8,7 +11,7 @@ function LoginForm() {
     handleSubmit,
     reset,
     formState: { isValid, errors },
-  } = useForm({ mode: 'all' });
+  } = useForm({ mode: 'all', resolver: joiResolver(userValidator) });
 
   function handleLogin(user) {
     console.log(user);
@@ -21,12 +24,19 @@ function LoginForm() {
         User name:
         <input type='text' {...register('username')} />
       </label>
+      {errors.username && (
+        <span style={{ color: 'red' }}>{errors.username.message}</span>
+      )}
+
       <label className={styles.label}>
         Password:
         <input type='password' {...register('password')} />
       </label>
+      {errors.password && (
+        <span style={{ color: 'red' }}>{errors.password.message}</span>
+      )}
 
-      <button className={styles.btn} type='submit'>
+      <button className={styles.btn} type='submit' disabled={!isValid}>
         LOGIN
       </button>
     </form>
