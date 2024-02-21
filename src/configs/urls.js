@@ -1,4 +1,4 @@
-const baseURL = process.env.development.local.REACT_APP_API;
+const baseURL = process.env.REACT_APP_API;
 
 const urls = {
   register: '/users',
