@@ -1,11 +1,16 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { userValidator } from '../../validators/user.validator';
+import { oauthService } from '../../services/oauth.service';
 
 import styles from './LoginForm.module.css';
 
 function LoginForm() {
+  const [apiError, setApiError] = useState(null);
+
   const {
     register,
     handleSubmit,
@@ -13,13 +18,24 @@ function LoginForm() {
     formState: { isValid, errors },
   } = useForm({ mode: 'all', resolver: joiResolver(userValidator) });
 
-  function handleLogin(user) {
-    console.log(user);
-    reset();
+  const navigate = useNavigate();
+
+  async function handleLogin(user) {
+    try {
+      const { data } = await oauthService.login(user);
+
+      oauthService.setAccessTokenKeys(data);
+      setApiError(null);
+      navigate('/cars');
+    } catch (error) {
+      setApiError(error.response?.data.detail);
+      reset();
+    }
   }
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(handleLogin)}>
+      {apiError && <span style={{ color: 'red' }}>{apiError}</span>}
       <label className={styles.label}>
         User name:
         <input type='text' {...register('username')} />
