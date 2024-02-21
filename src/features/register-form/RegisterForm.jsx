@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { userValidator } from '../../validators/user.validator';
+import { userService } from '../../services/user.service';
 
 import styles from './RegisterForm.module.css';
 
@@ -13,9 +15,16 @@ function RegisterForm() {
     formState: { isValid, errors },
   } = useForm({ mode: 'all', resolver: joiResolver(userValidator) });
 
-  function handleRegister(user) {
-    console.log(user);
-    reset();
+  const navigate = useNavigate();
+
+  async function handleRegister(user) {
+    try {
+      await userService.register(user);
+      navigate('/login');
+    } catch (error) {
+      reset();
+      console.log('Reg Form Err:', error);
+    }
   }
 
   return (
