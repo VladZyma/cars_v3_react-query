@@ -1,4 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 // LAYOUTS
 import MainLayout from './layouts/MainLayout';
@@ -14,22 +16,33 @@ import Footer from './ui/footer/Footer';
 // STYLES
 import styles from './App.module.css';
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,
+    },
+  },
+});
+
 function App() {
   return (
     <div className={styles.app}>
       <Header />
 
-      <Routes>
-        <Route path='/' element={<MainLayout />}>
-          <Route index element={<Navigate replace to='/home' />} />
-          <Route path='/home' element={<HomePage />} />
-          <Route path='/register' element={<RegisterPage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/cars' element={<CarsPage />} />
+      <QueryClientProvider client={queryClient}>
+        <Routes>
+          <Route path='/' element={<MainLayout />}>
+            <Route index element={<Navigate replace to='/home' />} />
+            <Route path='/home' element={<HomePage />} />
+            <Route path='/register' element={<RegisterPage />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/cars' element={<CarsPage />} />
 
-          <Route path='*' element={<Error404Page />} />
-        </Route>
-      </Routes>
+            <Route path='*' element={<Error404Page />} />
+          </Route>
+        </Routes>
+        <ReactQueryDevtools initialIsOpen={true} />
+      </QueryClientProvider>
 
       <Footer />
     </div>
