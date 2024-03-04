@@ -1,5 +1,11 @@
+import CarsList from '../features/cars/CarsList';
+
 function CarsPage() {
-  return <div></div>;
+  return (
+    <div>
+      <CarsList />
+    </div>
+  );
 }
 
 export default CarsPage;
