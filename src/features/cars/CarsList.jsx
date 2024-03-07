@@ -4,7 +4,7 @@ import { useDeleteCarById } from './useDeleteCarById';
 
 import styles from './CarsList.module.css';
 
-function CarsList({ cars }) {
+function CarsList({ cars, findCarById, isCarUpdating }) {
   const { deleteCarById, isDeleting } = useDeleteCarById();
 
   return (
@@ -15,6 +15,8 @@ function CarsList({ cars }) {
           car={car}
           deleteCarById={deleteCarById}
           isDeleting={isDeleting}
+          findCarById={findCarById}
+          isCarUpdating={isCarUpdating}
         />
       ))}
     </ul>

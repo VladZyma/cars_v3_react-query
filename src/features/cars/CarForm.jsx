@@ -1,9 +1,10 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { carValidator } from '../../validators/car.validator';
 
-function CarForm({ createCar }) {
+function CarForm({ createCar, carForUpdate, setCarForUpdate, updateCarById }) {
   const {
     register,
     handleSubmit,
@@ -12,9 +13,23 @@ function CarForm({ createCar }) {
     formState: { isValid, errors },
   } = useForm({ mode: 'all', resolver: joiResolver(carValidator) });
 
+  useEffect(() => {
+    if (carForUpdate) {
+      setValue('brand', carForUpdate.brand, { shouldValidate: true });
+      setValue('price', carForUpdate.price, { shouldValidate: true });
+      setValue('year', carForUpdate.year, { shouldValidate: true });
+    }
+  }, [carForUpdate, setValue]);
+
   function onFormSubmit(car) {
     try {
-      createCar(car);
+      if (carForUpdate) {
+        updateCarById({ car, id: carForUpdate.id });
+        setCarForUpdate(null);
+      } else {
+        createCar(car);
+      }
+
       reset();
     } catch (error) {
       console.log('Create_Car_Err:', error);
@@ -41,7 +56,7 @@ function CarForm({ createCar }) {
       />
       {errors.year && <span>{errors.year.message}</span>}
 
-      <button disabled={!isValid}>CREATE</button>
+      <button disabled={!isValid}>{carForUpdate ? 'UPDATE' : 'CREATE'}</button>
     </form>
   );
 }
