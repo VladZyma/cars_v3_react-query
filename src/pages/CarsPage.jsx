@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import CarsList from '../features/cars/CarsList';
 import CarForm from '../features/cars/CarForm';
@@ -8,10 +9,15 @@ import { useCreateCar } from '../features/cars/useCreateCar';
 import { useUpdateCarById } from '../features/cars/useUpdateCarById';
 import { useAddCarPhotoById } from '../features/cars/useAddCarPhotoById';
 
+const PAGE_SIZE = 3;
+
 function CarsPage() {
   const [carForUpdate, setCarForUpdate] = useState(null);
 
+  const [query, setQuery] = useSearchParams();
+
   const { cars, isLoading, error } = useGetCars();
+
   const { createCar, isCreating } = useCreateCar();
   const { updateCarById, isCarUpdating } = useUpdateCarById();
   const { addCarPhotoById, isAddingPhoto } = useAddCarPhotoById();
@@ -29,6 +35,26 @@ function CarsPage() {
 
     addCarPhotoById({ formData, id });
   }
+
+  //  PAGINATION
+  const currentPage = !query.get('page') ? 1 : Number(query.get('page'));
+  const pageCount = Math.ceil(cars?.total_items / PAGE_SIZE);
+
+  function handlePrevPage() {
+    const prev = currentPage === 1 ? currentPage : currentPage - 1;
+
+    query.set('page', prev);
+    setQuery(query);
+  }
+
+  function handleNextPage() {
+    const next = currentPage === pageCount ? currentPage : currentPage + 1;
+
+    query.set('page', next);
+    setQuery(query);
+  }
+
+  console.log(cars);
 
   return (
     <div>
@@ -50,6 +76,13 @@ function CarsPage() {
         addPhotoById={addPhotoById}
         isAddingPhoto={isAddingPhoto}
       />
+      <hr />
+      <button disabled={currentPage === 1} onClick={handlePrevPage}>
+        prev
+      </button>
+      <button disabled={currentPage === pageCount} onClick={handleNextPage}>
+        next
+      </button>
     </div>
   );
 }
