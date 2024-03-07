@@ -6,6 +6,8 @@ function CarItem({
   isDeleting,
   findCarById,
   isCarUpdating,
+  addPhotoById,
+  isAddingPhoto,
 }) {
   return (
     <li>
@@ -16,11 +18,14 @@ function CarItem({
       <p>Brand: {car.brand}</p>
       <p>Price: {car.price}</p>
       <p>Year: {car.year}</p>
+
+      {isAddingPhoto && <h1>Adding car photo</h1>}
+
       <div className={styles.imgWrapper}>
         {car.photo ? (
           <img className={styles.img} src={car.photo} alt={car.brand} />
         ) : (
-          <input type='file' />
+          <input type='file' onChange={(e) => addPhotoById(e, car.id)} />
         )}
       </div>
       <button onClick={() => findCarById(car.id)}>UPDATE</button>
