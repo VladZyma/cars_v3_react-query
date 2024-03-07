@@ -1,8 +1,10 @@
 import styles from './CarsItem.module.css';
 
-function CarItem({ car }) {
+function CarItem({ car, deleteCarById, isDeleting }) {
   return (
     <li>
+      {isDeleting && <h1>Car is deleting...</h1>}
+
       <p>ID: {car.id}</p>
       <p>Brand: {car.brand}</p>
       <p>Price: {car.price}</p>
@@ -15,7 +17,7 @@ function CarItem({ car }) {
         )}
       </div>
       <button>UPDATE</button>
-      <button>DELETE</button>
+      <button onClick={() => deleteCarById(car.id)}>DELETE</button>
     </li>
   );
 }
