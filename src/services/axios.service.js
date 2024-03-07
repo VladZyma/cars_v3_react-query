@@ -30,7 +30,7 @@ axiosService.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const { data } = oauthService.refresh(refresh);
+        const { data } = await oauthService.refresh(refresh);
         oauthService.setAccessTokenKeys(data);
       } catch (error) {
         oauthService.deleteAccessTokenKeys();
