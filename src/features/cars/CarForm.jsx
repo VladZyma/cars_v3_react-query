@@ -3,7 +3,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 
 import { carValidator } from '../../validators/car.validator';
 
-function CarForm() {
+function CarForm({ createCar }) {
   const {
     register,
     handleSubmit,
@@ -12,7 +12,15 @@ function CarForm() {
     formState: { isValid, errors },
   } = useForm({ mode: 'all', resolver: joiResolver(carValidator) });
 
-  function onFormSubmit(car) {}
+  function onFormSubmit(car) {
+    try {
+      createCar(car);
+      reset();
+    } catch (error) {
+      console.log('Create_Car_Err:', error);
+      reset();
+    }
+  }
 
   return (
     <form onSubmit={handleSubmit(onFormSubmit)}>
